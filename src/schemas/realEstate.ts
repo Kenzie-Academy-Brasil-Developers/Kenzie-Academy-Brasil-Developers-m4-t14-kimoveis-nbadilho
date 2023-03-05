@@ -2,11 +2,11 @@ import { z } from "zod";
 import { returnCategorieSchema } from "./categorieSchema";
 
 export const addressSchema = z.object({
-  street: z.string().max(45),
-  zipCode: z.string().max(8),
-  number: z.string().max(6).optional(),
-  city: z.string().max(20),
-  state: z.string().max(2),
+  street: z.string().min(1).max(45),
+  zipCode: z.string().min(1).max(8),
+  number: z.string().min(1).max(6).optional().nullable(),
+  city: z.string().min(1).max(20),
+  state: z.string().min(2).max(2),
 });
 
 export const returnAddressSchema = addressSchema.extend({ id: z.number() });
@@ -23,8 +23,8 @@ export const returnRealEstateSchema = realEstateSchema
   .extend({
     id: z.number(),
     sold: z.boolean().default(false),
-    createdAt: z.date(),
-    updatedAt: z.date(),
+    createdAt: z.string(),
+    updatedAt: z.string(),
     address: returnAddressSchema,
-    category: returnCategorieSchema || null,
+    category: returnCategorieSchema.nullish(),
   });

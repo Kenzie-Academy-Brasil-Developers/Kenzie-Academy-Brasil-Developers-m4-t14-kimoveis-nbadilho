@@ -16,13 +16,13 @@ export const checkAdressExistsMiddleware = async (
     AppDataSource.getRepository(Address);
   const findAdress = await adressRepository.findOne({
     where: {
-      zipCode: userAdress.zipCode,
-      state: userAdress.state,
+      zipCode: userAdress?.zipCode,
+      street: userAdress?.street,
     },
   });
 
   if (findAdress) {
-    throw new AppError("Adress already exists", 409);
+    throw new AppError("Address already exists", 409);
   }
 
   return next();

@@ -20,31 +20,53 @@ export const newRealEstate = async (
 
   await addressRepository.save(address);
 
+  const categoryRepository: Repository<Category> =
+    AppDataSource.getRepository(Category);
+
   const realEstateRepository: Repository<RealEstate> =
     AppDataSource.getRepository(RealEstate);
+  if (realEstate.categoryId) {
+    const findCategory = await categoryRepository.findOne({
+      where: {
+        id: realEstate.categoryId,
+      },
+    });
+    const createRealEstate = {
+      ...realEstate,
+      address: address,
+      categoryId: findCategory,
+    };
 
-  const newRealEstate: RealEstate = realEstateRepository.create(realEstate);
+    const newRealEstate: RealEstate =
+      realEstateRepository.create(createRealEstate);
+    await realEstateRepository.save(newRealEstate);
 
+    const updatedRealEstate = {
+      ...newRealEstate,
+      category: {
+        id: findCategory?.id,
+        name: findCategory?.name,
+      },
+    };
+    const returnRealEstate = returnRealEstateSchema.parse(updatedRealEstate);
+
+    return returnRealEstate;
+  }
+  const createRealEstate = {
+    ...realEstate,
+    address: address,
+    categoryId: null,
+  };
+
+  const newRealEstate: RealEstate =
+    realEstateRepository.create(createRealEstate);
   await realEstateRepository.save(newRealEstate);
 
-  newRealEstate.address = address;
+  const updatedRealEstate = {
+    ...newRealEstate,
+    category: null,
+  };
+  const returnRealEstate = returnRealEstateSchema.parse(updatedRealEstate);
 
-  // if (realEstate.categoryId!==null) {
-  //   const categoryRepository: Repository<Category> =
-  //     AppDataSource.getRepository(Category);
-
-  //   const findCategory = await categoryRepository.findOne({
-  //     where: {
-  //       id: realEstate.categoryId,
-  //     },
-  //   });
-
-  //   newRealEstate.category = findCategory;
-  // }
-
-  // newRealEstate.category=null
-
-  const returnRealEstate = returnRealEstateSchema.parse(newRealEstate);
-  console.log(newRealEstate);
   return returnRealEstate;
 };
