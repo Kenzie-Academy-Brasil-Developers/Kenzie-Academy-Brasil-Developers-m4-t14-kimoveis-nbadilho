@@ -4,8 +4,7 @@ import {
   getAllRealEstateController,
 } from "../controllers/realEstateControllers";
 import { checkAdminMiddleware } from "../middlewares/checkAdminMiddleware";
-import { checkAdressExistsMiddleware } from "../middlewares/checkAdressMiddleware";
-import { checkCategoryRealEstateMiddleware } from "../middlewares/checkCategoryRealEstate";
+import { checkNewRealEstateMiddleware } from "../middlewares/checkNewRealEstateMiddleware";
 import { checkValidDataMiddleware } from "../middlewares/checkDataMiddleware";
 import { checkTokenMiddleware } from "../middlewares/checkTokenMiddleware";
 import { realEstateSchema } from "../schemas/realEstate";
@@ -17,8 +16,7 @@ realEstateRoutes.post(
   checkTokenMiddleware,
   checkAdminMiddleware,
   checkValidDataMiddleware(realEstateSchema),
-  checkAdressExistsMiddleware,
-  checkCategoryRealEstateMiddleware,
+  checkNewRealEstateMiddleware,
   createRealEstateController
 );
 

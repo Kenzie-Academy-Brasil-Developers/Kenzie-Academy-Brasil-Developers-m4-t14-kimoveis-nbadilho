@@ -2,9 +2,10 @@ import { Request, Response, NextFunction } from "express";
 import { Repository } from "typeorm";
 import { AppDataSource } from "../data-source";
 import { Category } from "../entities";
+
 import { AppError } from "../errors";
 
-export const checkCategoryRealEstateMiddleware = async (
+export const checkCategoryGetExistsMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -14,7 +15,7 @@ export const checkCategoryRealEstateMiddleware = async (
 
   const findCategory = await categoryRepository.findOne({
     where: {
-      id: req.body.categoryId,
+      id: parseInt(req.params.id),
     },
   });
 

@@ -4,10 +4,8 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToMany,
   OneToOne,
   JoinColumn,
-  JoinTable,
   ManyToOne,
 } from "typeorm";
 import { Address } from "./adress.entity";
@@ -21,7 +19,7 @@ export class RealEstate {
   @Column({ default: false })
   sold: boolean;
 
-  @Column({ type: "decimal", precision: 12, scale: 2 })
+  @Column({ type: "decimal", precision: 12, scale: 2, default: 0 })
   value: number | string;
 
   @Column()

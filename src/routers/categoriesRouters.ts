@@ -5,9 +5,11 @@ import { categorieSchema } from "../schemas/categorieSchema";
 import { checkNewCategoryExistsMiddleware } from "../middlewares/checkNewCategoryMiddleware";
 import {
   getAllCategoriesController,
+  getAllRealEstateCategoryController,
   postNewCategorieController,
 } from "../controllers/categorieController";
 import { checkAdminMiddleware } from "../middlewares/checkAdminMiddleware";
+import { checkCategoryGetExistsMiddleware } from "../middlewares/checkCategoryGetMiddleware";
 
 export const categoriesRoutes: Router = Router();
 
@@ -21,3 +23,9 @@ categoriesRoutes.post(
 );
 
 categoriesRoutes.get("", getAllCategoriesController);
+
+categoriesRoutes.get(
+  "/:id/realEstate",
+  checkCategoryGetExistsMiddleware,
+  getAllRealEstateCategoryController
+);

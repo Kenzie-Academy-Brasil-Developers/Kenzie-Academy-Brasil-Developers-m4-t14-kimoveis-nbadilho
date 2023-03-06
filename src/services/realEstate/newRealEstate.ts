@@ -42,6 +42,6 @@ export const newRealEstate = async (
   await realEstateRepository.save(newRealEstate);
 
   const returnRealEstate = returnRealEstateSchema.parse(newRealEstate);
-  console.log(newRealEstate);
+
   return returnRealEstate;
 };

@@ -7,12 +7,11 @@ export const getAllRealEstateService = async (): Promise<IAllRealEstate> => {
   const realEstateRepository: Repository<RealEstate> =
     AppDataSource.getRepository(RealEstate);
 
-  const realEstateQueryBuilder =
-    realEstateRepository.createQueryBuilder("realEstate");
+  const findRealEstates = await realEstateRepository.find({
+    relations: {
+      address: true,
+    },
+  });
 
-  const findRealEstates = await realEstateQueryBuilder
-    .innerJoinAndSelect("realEstate.address", "address")
-    .getMany();
-  console.log(findRealEstates);
   return findRealEstates;
 };
