@@ -25,6 +25,7 @@ export const newRealEstate = async (
 
   const realEstateRepository: Repository<RealEstate> =
     AppDataSource.getRepository(RealEstate);
+
   if (realEstate.categoryId) {
     const findCategory = await categoryRepository.findOne({
       where: {
@@ -32,9 +33,10 @@ export const newRealEstate = async (
       },
     });
     const createRealEstate = {
-      ...realEstate,
+      value: realEstate.value,
+      size: realEstate.size,
       address: address,
-      categoryId: findCategory,
+      category: findCategory,
     };
 
     const newRealEstate: RealEstate =
@@ -52,10 +54,12 @@ export const newRealEstate = async (
 
     return returnRealEstate;
   }
+
   const createRealEstate = {
-    ...realEstate,
+    value: realEstate.value,
+    size: realEstate.size,
     address: address,
-    categoryId: null,
+    category: null,
   };
 
   const newRealEstate: RealEstate =

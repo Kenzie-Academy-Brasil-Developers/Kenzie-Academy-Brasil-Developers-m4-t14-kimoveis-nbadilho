@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { IPatchUser, IUser } from "../interfaces/userInterfaces";
 import { deleteUserService } from "../services/users/deleteUserService";
+import { getUsersService } from "../services/users/getUsersService";
 import { newUserService } from "../services/users/newUserService";
 import { patchUserService } from "../services/users/patchUserService";
 
@@ -25,7 +26,13 @@ export const deleteUserController = async (req: Request, res: Response) => {
   const id = parseInt(req.params.id);
   const adminUser = req.userInfo.admin;
 
-  await deleteUserService(id,adminUser);
+  await deleteUserService(id, adminUser);
 
   return res.status(204).send();
+};
+
+export const getUsersController = async (req: Request, res: Response) => {
+  const allUsers = await getUsersService();
+
+  return res.status(200).json(allUsers);
 };

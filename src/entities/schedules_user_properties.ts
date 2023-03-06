@@ -6,6 +6,7 @@ import {
   JoinColumn,
   ManyToOne,
 } from "typeorm";
+import { date } from "zod";
 import { RealEstate } from "./real_estate.entity";
 import { User } from "./user.entity";
 
@@ -14,11 +15,11 @@ export class Schedule {
   @PrimaryGeneratedColumn("increment")
   id: number;
 
-  @Column()
-  date: Date;
+  @Column({ type: "date" })
+  date: string;
 
-  @Column()
-  hour: Date;
+  @Column({ type: "time" })
+  hour: string;
 
   @ManyToOne(() => RealEstate, (real_estate) => real_estate.id)
   realEstatate: RealEstate;

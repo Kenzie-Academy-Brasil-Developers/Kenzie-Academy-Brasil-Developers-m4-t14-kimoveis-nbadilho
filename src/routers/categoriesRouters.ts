@@ -3,7 +3,7 @@ import { checkTokenMiddleware } from "../middlewares/checkTokenMiddleware";
 import { checkValidDataMiddleware } from "../middlewares/checkDataMiddleware";
 import { categorieSchema } from "../schemas/categorieSchema";
 import { checkNewCategoryExistsMiddleware } from "../middlewares/checkNewCategoryMiddleware";
-import { postNewCategorieController } from "../controllers/categorieController";
+import { getAllCategoriesController, postNewCategorieController } from "../controllers/categorieController";
 import { checkAdminMiddleware } from "../middlewares/checkAdminMiddleware";
 
 export const categoriesRoutes: Router = Router();
@@ -16,3 +16,5 @@ categoriesRoutes.post(
   checkNewCategoryExistsMiddleware,
   postNewCategorieController
 );
+
+categoriesRoutes.get("",getAllCategoriesController);

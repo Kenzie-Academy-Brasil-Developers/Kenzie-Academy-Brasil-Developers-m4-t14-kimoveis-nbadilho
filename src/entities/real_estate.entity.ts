@@ -36,7 +36,7 @@ export class RealEstate {
   @JoinColumn()
   address: Address;
 
-  @OneToOne(() => Category)
+  @OneToOne(() => Category, { nullable: true })
   @JoinColumn()
-  category: Category;
+  category: Category|null|undefined;
 }

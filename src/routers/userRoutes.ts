@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   deleteUserController,
+  getUsersController,
   postNewUserController,
 } from "../controllers/usersControllers";
 import { checkValidDataMiddleware } from "../middlewares/checkDataMiddleware";
@@ -11,6 +12,7 @@ import { checkValidPermissionMiddleware } from "../middlewares/checkValidPermiss
 import { updateUserSchema, userSchema } from "../schemas/usersSchema";
 import { patchUserController } from "../controllers/usersControllers";
 import { checkPatchEmailMiddleware } from "../middlewares/checkPatchEmailMiddleware";
+import { checkAdminMiddleware } from "../middlewares/checkAdminMiddleware";
 
 export const userRoutes: Router = Router();
 
@@ -36,4 +38,11 @@ userRoutes.delete(
   checkTokenMiddleware,
   checkValidIdMiddleware,
   deleteUserController
+);
+
+userRoutes.get(
+  "",
+  checkTokenMiddleware,
+  checkAdminMiddleware,
+  getUsersController
 );
