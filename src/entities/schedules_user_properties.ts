@@ -1,12 +1,4 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  OneToOne,
-  JoinColumn,
-  ManyToOne,
-} from "typeorm";
-import { date } from "zod";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
 import { RealEstate } from "./real_estate.entity";
 import { User } from "./user.entity";
 
@@ -21,9 +13,9 @@ export class Schedule {
   @Column({ type: "time" })
   hour: string;
 
-  @ManyToOne(() => RealEstate, (real_estate) => real_estate.id)
-  realEstatate: RealEstate;
-
   @ManyToOne(() => User)
   user: User;
+
+  @ManyToOne(() => RealEstate, (real_estate) => real_estate.schedules)
+  realEstate: RealEstate;
 }

@@ -17,13 +17,13 @@ export const loginUserService = async (
   });
 
   if (!user || user.deletedAt !== null) {
-    throw new AppError("Wrong email or password", 401);
+    throw new AppError("Invalid credentials", 401);
   }
 
   const comparedPassword = await compare(loginData.password, user.password);
 
   if (!comparedPassword) {
-    throw new AppError("Wrong email or password", 401);
+    throw new AppError("Invalid credentials", 401);
   }
 
   const newToken: string = jwt.sign(
