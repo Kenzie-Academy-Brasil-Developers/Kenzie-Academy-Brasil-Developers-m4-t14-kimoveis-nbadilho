@@ -6,3 +6,4 @@ import {
 
 export type IRealEstate = z.infer<typeof realEstateSchema>;
 export type IReturnRealEstate = z.infer<typeof returnRealEstateSchema>;
+export type IAllRealEstate = Array<IReturnRealEstate>;

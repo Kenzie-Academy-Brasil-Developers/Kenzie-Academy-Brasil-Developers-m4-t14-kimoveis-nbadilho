@@ -1,15 +1,21 @@
 import { Request, Response } from "express";
-import { IPatchUser } from "../interfaces/userInterfaces";
+import { getAllRealEstateService } from "../services/realEstate/getAllRealEstate";
 import { newRealEstate } from "../services/realEstate/newRealEstate";
-import { patchUserService } from "../services/users/patchUserService";
 
 export const createRealEstateController = async (
   req: Request,
   res: Response
 ) => {
-  const adminUser = req.userInfo.admin;
-
-  const newRealEstateCreated = await newRealEstate(req.body, adminUser);
+  const newRealEstateCreated = await newRealEstate(req.body);
 
   return res.status(201).json(newRealEstateCreated);
+};
+
+export const getAllRealEstateController = async (
+  req: Request,
+  res: Response
+) => {
+  const allRealEstates = await getAllRealEstateService();
+
+  return res.status(200).json(allRealEstates);
 };

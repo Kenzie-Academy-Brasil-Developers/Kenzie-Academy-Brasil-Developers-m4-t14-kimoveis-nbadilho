@@ -1,8 +1,10 @@
 import { Router } from "express";
-import { createRealEstateController } from "../controllers/realEstateControllers";
+import {
+  createRealEstateController,
+  getAllRealEstateController,
+} from "../controllers/realEstateControllers";
 import { checkAdminMiddleware } from "../middlewares/checkAdminMiddleware";
 import { checkAdressExistsMiddleware } from "../middlewares/checkAdressMiddleware";
-import { checkCategoryExistsMiddleware } from "../middlewares/checkCategoryMiddleware";
 import { checkCategoryRealEstateMiddleware } from "../middlewares/checkCategoryRealEstate";
 import { checkValidDataMiddleware } from "../middlewares/checkDataMiddleware";
 import { checkTokenMiddleware } from "../middlewares/checkTokenMiddleware";
@@ -19,3 +21,5 @@ realEstateRoutes.post(
   checkCategoryRealEstateMiddleware,
   createRealEstateController
 );
+
+realEstateRoutes.get("", getAllRealEstateController);

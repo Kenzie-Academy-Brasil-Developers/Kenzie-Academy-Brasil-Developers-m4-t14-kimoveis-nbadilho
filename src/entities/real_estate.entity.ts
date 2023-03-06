@@ -8,6 +8,7 @@ import {
   OneToOne,
   JoinColumn,
   JoinTable,
+  ManyToOne,
 } from "typeorm";
 import { Address } from "./adress.entity";
 import { Category } from "./categories.entity";
@@ -36,7 +37,6 @@ export class RealEstate {
   @JoinColumn()
   address: Address;
 
-  @OneToOne(() => Category, { nullable: true })
-  @JoinColumn()
-  category: Category|null|undefined;
+  @ManyToOne(() => Category)
+  category: Category;
 }
