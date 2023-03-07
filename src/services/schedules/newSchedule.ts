@@ -1,34 +1,41 @@
 import { AppDataSource } from "../../data-source";
-import { Schedule } from "../../entities";
+import { Schedule, RealEstate, User } from "../../entities";
 import { Repository } from "typeorm";
-
-import { IReturnSchedule, ISchedule } from "../../interfaces/scheduleInterface";
+import { ISchedule } from "../../interfaces/scheduleInterface";
 
 export const newScheduleService = async (
   scheduleData: ISchedule,
   userId: number
-): Promise<IReturnSchedule> => {
+): Promise<Schedule> => {
   const scheduleRepository: Repository<Schedule> =
     AppDataSource.getRepository(Schedule);
+
+  const userRepository: Repository<User> = AppDataSource.getRepository(User);
+  const findUser = await userRepository.findOne({
+    where: {
+      id: userId,
+    },
+  });
+
+  const realEstateRepository: Repository<RealEstate> =
+    AppDataSource.getRepository(RealEstate);
+
+  const findRealEstate = await realEstateRepository.findOne({
+    where: {
+      id: Number(scheduleData.realEstateId),
+    },
+  });
 
   const newSchedule = {
     date: scheduleData.date,
     hour: scheduleData.hour,
-    user: userId,
-    realEstate: scheduleData.realEstateId,
+    user: findUser!,
+    realEstate: findRealEstate!,
   };
 
   const createdSchedule: Schedule = scheduleRepository.create(newSchedule);
 
   await scheduleRepository.save(createdSchedule);
 
-  const returnSchedule: IReturnSchedule = {
-    id: createdSchedule.id,
-    userId: createdSchedule.user.id,
-    realEstateId: createdSchedule.realEstate.id,
-    date: createdSchedule.date,
-    hour: createdSchedule.hour,
-  };
-
-  return returnSchedule;
+  return createdSchedule;
 };

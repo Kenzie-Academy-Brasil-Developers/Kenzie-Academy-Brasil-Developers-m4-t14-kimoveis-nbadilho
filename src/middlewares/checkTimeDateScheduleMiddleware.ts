@@ -28,14 +28,14 @@ export const checkTimeDateMiddleware = async (
   const realEstateRepository: Repository<RealEstate> =
     AppDataSource.getRepository(RealEstate);
 
-  const findRealEstate = await realEstateRepository.find({
+  const findRealEstate = await realEstateRepository.findOne({
     where: {
       id: realEstateId,
     },
   });
 
   if (!findRealEstate) {
-    throw new AppError("Real estate not found", 404);
+    throw new AppError("RealEstate not found", 404);
   }
 
   const scheduleRepository: Repository<Schedule> =
@@ -50,26 +50,37 @@ export const checkTimeDateMiddleware = async (
     .andWhere("schedule.realEstateId = :realEstateId", { realEstateId })
     .getOne();
 
-  const repeatedScheduleUser = await scheduleQueryBuilder
-    .where("schedule.date = :date", { date })
-    .andWhere("schedule.hour = :hour", { hour })
-    .andWhere("schedule.realEstateId = :realEstateId", { realEstateId })
-    .andWhere("schedule.userId = :userId", { userId })
+  const repeatedScheduleQueryBuilder =
+    scheduleRepository.createQueryBuilder("schedule_user");
+  const repeatedScheduleUser = await repeatedScheduleQueryBuilder
+    .where("schedule_user.date = :date", { date })
+    .andWhere("schedule_user.hour = :hour", { hour })
+    .andWhere("schedule_user.userId = :userId", { userId })
     .getOne();
 
-  if (repeatedSchedule || repeatedScheduleUser) {
-    throw new AppError("Schedule already exists for that time and date.", 409);
+  if (repeatedSchedule) {
+    throw new AppError(
+      "Schedule to this real estate at this date and time already exists",
+      409
+    );
+  }
+
+  if (repeatedScheduleUser) {
+    throw new AppError(
+      "User schedule to this real estate at this date and time already exists",
+      409
+    );
   }
 
   const verifyHour = hour.split(":")[0];
-  if (verifyHour < 8 && verifyHour > 18) {
-    throw new AppError("Hour invalid.", 409);
+  if (verifyHour < 8 || verifyHour > 18) {
+    throw new AppError("Invalid hour, available times are 8AM to 18PM", 400);
   }
 
   const newDate = new Date(req.body.date);
   const getDayDate = newDate.getDay();
   if (getDayDate == 0 || getDayDate == 6) {
-    throw new AppError("Date invalid.", 409);
+    throw new AppError("Invalid date, work days are monday to friday", 400);
   }
 
   return next();

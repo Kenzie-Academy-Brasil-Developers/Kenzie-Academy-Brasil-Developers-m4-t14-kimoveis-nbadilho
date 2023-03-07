@@ -1,4 +1,10 @@
 import { z } from "zod";
+import {
+  realEstateSchema,
+  returnRealEstateScheduleSchema,
+  returnRealEstateSchema,
+} from "./realEstate";
+import { returnUserSchemaNoPassword } from "./usersSchema";
 
 export const scheduleSchema = z.object({
   date: z.string(),
@@ -10,6 +16,6 @@ export const returnScheduleSchema = scheduleSchema
   .omit({ realEstateId: true })
   .extend({
     id: z.number(),
-    userId: z.number(),
-    realEstateId: z.number(),
+    user: returnUserSchemaNoPassword,
+    realEstate: returnRealEstateScheduleSchema,
   });

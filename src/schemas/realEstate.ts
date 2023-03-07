@@ -28,3 +28,8 @@ export const returnRealEstateSchema = realEstateSchema
     address: returnAddressSchema,
     category: returnCategorieSchema,
   });
+
+export const returnRealEstateScheduleSchema = returnRealEstateSchema.omit({
+  address: true,
+  category: true,
+});
