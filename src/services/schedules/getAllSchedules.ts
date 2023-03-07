@@ -2,11 +2,11 @@ import { AppDataSource } from "../../data-source";
 import { Schedule, RealEstate } from "../../entities";
 import { Repository } from "typeorm";
 import { AppError } from "../../errors";
-import { IAllRealEstate } from "../../interfaces/realEstate.interface";
+import { iReturnSchedules } from "../../interfaces/scheduleInterface";
 
 export const getAllSchedulesService = async (
   realEstateId: number
-): Promise<any> => {
+): Promise<iReturnSchedules> => {
   const realEstateRepository: Repository<RealEstate> =
     AppDataSource.getRepository(RealEstate);
 
